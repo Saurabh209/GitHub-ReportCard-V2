@@ -2,4 +2,12 @@
   padding: 0px;
   margin: 0px;
   font-family: "Inter", sans-serif;
+  cursor: default;
+}
+
+:root {
+  --primary-color: #1f6feb;  
+  --text-blue-color: #002c70;
+  --svg-color: #141414;
+  --text-primary-color: #141414;
 }

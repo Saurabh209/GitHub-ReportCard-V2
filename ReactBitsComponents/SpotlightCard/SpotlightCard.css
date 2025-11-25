@@ -1,8 +1,5 @@
 .card-spotlight {
-    min-height: 100vh;
   position: relative;
-  border: 1px solid #222;
-  background-color: #323232;
   overflow: hidden;
   --mouse-x: 50%;
   --mouse-y: 50%;
