@@ -2,12 +2,25 @@
   padding: 0px;
   margin: 0px;
   font-family: "Inter", sans-serif;
-  cursor: default;
+
+
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
 }
 
 :root {
-  --primary-color: #1f6feb;  
+  --primary-color: #1f6feb;
   --text-blue-color: #002c70;
   --svg-color: #141414;
+  --svg-color2: #427cd6;
   --text-primary-color: #141414;
+  --svg-scale: 1.16
+}
+
+#root {
+  background-color: #2a2a2a;
+  height: 100vh;
 }

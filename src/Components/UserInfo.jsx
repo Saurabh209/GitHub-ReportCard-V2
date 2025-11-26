@@ -5,6 +5,7 @@ import axios from 'axios'
 import ShinyText from '../../ReactBitsComponents/ShinyText'
 import SpotlightCard from '../../ReactBitsComponents/SpotlightCard/SpotlightCard'
 import ScrambledText from '../../ReactBitsComponents/ScrambledText/ScrambledText'
+import { Link } from 'react-router-dom'
 export default function UserUnfo() {
 
     const [userData, setUserData] = useState({})
@@ -15,7 +16,7 @@ export default function UserUnfo() {
         try {
             const [userInfo, repoInfo] = await Promise.all([
                 axios.get(`https://api.github.com/users/${userName}`),
-                axios.get(`https://api.github.com/users/${userName}/repos`),
+                axios.get(`https://api.github.com/users/${userName}/repos?per_page=9&sort=updated`),
             ]);
 
             const formattedDate = formatDate(userInfo.data.created_at)
@@ -33,6 +34,7 @@ export default function UserUnfo() {
                 fullName: userInfo.data.name,
                 publicRepos: userInfo.data.public_repos,
                 twitter: userInfo.data.twitter_username,
+                url: userInfo.data.html_url
             };
 
             // repo array → map into clean list
@@ -66,7 +68,31 @@ export default function UserUnfo() {
         });
     };
 
-    console.log(userData)
+    const languageColors = {
+        "JavaScript": "#f1e05a",
+        TypeScript: "#3178c6",
+        HTML: "#e34c26",
+        CSS: "#563d7c",
+        SCSS: "#c6538c",
+        Python: "#3572A5",
+        Java: "#b07219",
+        "C++": "#f34b7d",
+        C: "#555555",
+        "C#": "#178600",
+        PHP: "#4F5D95",
+        Go: "#00ADD8",
+        Rust: "#dea584",
+        Swift: "#F05138",
+        Dart: "#00B4AB",
+        Kotlin: "#A97BFF",
+        Shell: "#89e051",
+        Ruby: "#701516",
+        Solidity: "#AA6746",
+    };
+    const defaultColor = "#9e9e9e";
+
+
+    console.log(repoData)
     return (
         <main className='userInfoMainContainer'>
 
@@ -84,16 +110,29 @@ export default function UserUnfo() {
                 }}
             >
                 <div className='LogoContainer'>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="github" class="lucide lucide-github w-8 h-8 text-gh-accent"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"></path><path d="M9 18c-4.51 2-5-2-7-2"></path></svg>
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        data-lucide="github"
+                        className="lucide lucide-github w-8 h-8 text-gh-accent"
+                    >
+                        <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4" />
+                        <path d="M9 18c-4.51 2-5-2-7-2" />
+                    </svg>
+
                     <span style={{ fontWeight: "bold", cursor: "default", letterSpacing: "0.5px", fontSize: "20px" }}>
                         Github Report Card
                     </span>
                 </div>
 
-                <div
-
-
-                >
+                <div >
                     <input className='userInput' value={userName} type="text" placeholder=" search Saurabh209" onChange={(e) => { setUserName(e.target.value) }} />
                     <button className='userSubmitButton' onClick={HandleUserFind}>Find User</button>
                 </div>
@@ -125,15 +164,19 @@ export default function UserUnfo() {
 
             {!loading &&
                 <>
-                    <SpotlightCard className="custom-spotlight-card" spotlightColor="rgba(6, 6, 6, 0.6)">
+                    <SpotlightCard className="custom-spotlight-card" spotlightColor="rgba(6, 6, 6, 0.72)">
                         <div className='userInfoCard'>
                             <div className='userPersonalInfoContainer'>
+
+                                {/* logoCOntainer */}
                                 <section className='userProfileLogoContainer'>
                                     <div className='imageWrapper'>
                                         <img src={userData.profileLogo} alt="" />
                                     </div>
 
                                 </section>
+
+
                                 <section className='userProfileBioContainer'>
                                     <div className='userNameContainer'>
                                         <div className='userName'>
@@ -164,7 +207,6 @@ export default function UserUnfo() {
                                                     <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
                                                     <circle cx="9" cy="7" r="4" />
                                                 </svg>
-
                                                 <p>{`Followers: ${userData.followers}`}</p>
                                             </div>
 
@@ -369,10 +411,108 @@ export default function UserUnfo() {
 
                                     </div>
                                 </section>
+
+
                             </div>
+
                             <div className='userStatsInfoContainer'>
                                 <section className='repoContainer'>
+                                    {repoData.map((repo, index) => {
+                                        let langColor = languageColors[repo.language] || defaultColor;
+                                        return (
 
+
+                                            <Link target='_blank' style={{ zIndex: '2' }} key={index} to={`${repo.url}`}>
+                                                <div className='singleRepo'>
+                                                    <div className='singleRepoFirstRow'>
+                                                        <svg
+                                                            aria-hidden="true"
+                                                            height="18"
+                                                            width="18"
+                                                            viewBox="0 0 16 16"
+                                                            className="octicon octicon-repo mr-1"
+                                                            fill="currentColor"
+                                                        >
+                                                            <path d="M2 2.5A2.5 2.5 0 0 1 4.5 0h8.75a.75.75 0 0 1 .75.75v12.5a.75.75 0 0 1-.75.75h-2.5a.75.75 0 0 1 0-1.5h1.75v-2h-8a1 1 0 0 0-.714 1.7.75.75 0 1 1-1.072 1.05A2.495 2.495 0 0 1 2 11.5Zm10.5-1h-8a1 1 0 0 0-1 1v6.708A2.486 2.486 0 0 1 4.5 9h8ZM5 12.25a.25.25 0 0 1 .25-.25h3.5a.25.25 0 0 1 .25.25v3.25a.25.25 0 0 1-.4.2l-1.45-1.087a.249.249 0 0 0-.3 0L5.4 15.7a.25.25 0 0 1-.4-.2Z" />
+                                                        </svg>
+
+
+                                                        <p>{repo.name}</p>
+                                                    </div>
+                                                    <div className='singleRepoSecondRow'>
+                                                        <p>{repo.description ? repo.description : "no description provided for this repo"}</p>
+                                                    </div>
+                                                    <div className='singleRepoThirdRow'>
+                                                        <div className='singleRepoThirdRowLeft'>
+                                                            <div className='singleRepoThirdRowLng'>
+                                                                <span
+                                                                    className="dot"
+                                                                    style={{
+                                                                        display: "inline-block",
+                                                                        width: "8px",
+                                                                        height: "8px",
+                                                                        borderRadius: "50%",
+                                                                        backgroundColor: langColor,
+                                                                        marginRight: "4px",
+                                                                    }}
+                                                                ></span>
+                                                                <p  > {repo?.language}</p>
+                                                            </div>
+                                                            <div className='singleRepoThirdRowStars'>
+                                                                <svg
+                                                                    xmlns="http://www.w3.org/2000/svg"
+                                                                    width="12"
+                                                                    height="12"
+                                                                    viewBox="0 0 24 24"
+                                                                    fill="none"
+                                                                    stroke="currentColor"
+                                                                    strokeWidth="2"
+                                                                    strokeLinecap="round"
+                                                                    strokeLinejoin="round"
+                                                                    data-lucide="star"
+                                                                    className="lucide lucide-star w-3 h-3"
+                                                                >
+                                                                    <path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z" />
+                                                                </svg>
+
+                                                                <p>{repo?.stars}</p>
+                                                            </div >
+                                                            <div className='singleRepoThirdRowForks'>
+                                                                <svg
+                                                                    xmlns="http://www.w3.org/2000/svg"
+                                                                    width="12"
+                                                                    height="12"
+                                                                    viewBox="0 0 24 24"
+                                                                    fill="none"
+                                                                    stroke="currentColor"
+                                                                    strokeWidth="2"
+                                                                    strokeLinecap="round"
+                                                                    strokeLinejoin="round"
+                                                                    data-lucide="git-fork"
+                                                                    className="lucide lucide-git-fork w-3 h-3"
+                                                                >
+                                                                    <circle cx="12" cy="18" r="3" />
+                                                                    <circle cx="6" cy="6" r="3" />
+                                                                    <circle cx="18" cy="6" r="3" />
+                                                                    <path d="M18 9v2c0 .6-.4 1-1 1H7c-.6 0-1-.4-1-1V9" />
+                                                                    <path d="M12 12v3" />
+                                                                </svg>
+
+                                                                <p>{repo?.forks}</p>
+                                                            </div>
+                                                        </div>
+                                                        <div className='singleRepoThirdRowRight'>
+                                                            {/* <p>{repo?.createdAt}</p> */}
+                                                        </div>
+
+
+
+                                                    </div>
+                                                </div>
+                                            </Link>
+
+                                        )
+                                    })}
                                 </section>
                                 <section className='graphsContainer'>
 
