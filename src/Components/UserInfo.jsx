@@ -1,5 +1,5 @@
 import { useState } from "react";
-
+import * as htmlToImage from "html-to-image";
 import "./UserInfo.scss";
 import axios from "axios";
 import ShinyText from "../../ReactBitsComponents/ShinyText";
@@ -23,6 +23,23 @@ export default function UserUnfo() {
     const [generatedUserBio, setGeneratedUserBio] = useState("");
     const [loading, setLoading] = useState(true);
     const [userName, setUserName] = useState("Saurabh209");
+
+    function downloadCard() {
+
+        const node = document.getElementById("reportCard");
+
+        htmlToImage.toPng(node)
+            .then((dataUrl) => {
+                const link = document.createElement("a");
+                link.download = `${userData.userName}'s_Report_Card.png`;
+                link.href = dataUrl;
+                link.click();
+            })
+            .catch((err) => {
+                console.error("failed to download image", err);
+            });
+
+    }
 
     const HandleUserFind = async () => {
         try {
@@ -150,7 +167,7 @@ export default function UserUnfo() {
         }
         return num.toString();
     }
-
+    console.log("end ", userName)
     return (
         <main className="userInfoMainContainer">
             {/* navbar */}
@@ -235,7 +252,7 @@ export default function UserUnfo() {
             {!loading && (
                 <>
                     {/* <SpotlightCard className="custom-spotlight-card" spotlightColor="rgba(6, 6, 6, 0.72)"> */}
-                    <div className="userInfoCard">
+                    <div id="reportCard" className="userInfoCard">
                         <div className="userPersonalInfoContainer">
                             {/* logoCOntainer */}
                             <section className="userProfileLogoContainer">
@@ -341,6 +358,9 @@ export default function UserUnfo() {
                                             speed={3}
                                             className="custom-class"
                                         />
+                                        <div className="AI-generated-Text">
+                                            <p>AI-Generated*</p>
+                                        </div>
                                     </div>
                                 )}
                                 <div className="userLinksContainer">
@@ -465,6 +485,13 @@ export default function UserUnfo() {
                                             />
                                         </div>
                                     )}
+
+
+                                </div>
+
+                                <div onClick={downloadCard} className="downloadButtonContainer">
+                                    <p>download</p>
+                                    <img src="/icons8-download-64.png" alt="" />
                                 </div>
                             </section>
                         </div>
@@ -487,6 +514,8 @@ export default function UserUnfo() {
                                                     >
                                                         <path d="M2 2.5A2.5 2.5 0 0 1 4.5 0h8.75a.75.75 0 0 1 .75.75v12.5a.75.75 0 0 1-.75.75h-2.5a.75.75 0 0 1 0-1.5h1.75v-2h-8a1 1 0 0 0-.714 1.7.75.75 0 1 1-1.072 1.05A2.495 2.495 0 0 1 2 11.5Zm10.5-1h-8a1 1 0 0 0-1 1v6.708A2.486 2.486 0 0 1 4.5 9h8ZM5 12.25a.25.25 0 0 1 .25-.25h3.5a.25.25 0 0 1 .25.25v3.25a.25.25 0 0 1-.4.2l-1.45-1.087a.249.249 0 0 0-.3 0L5.4 15.7a.25.25 0 0 1-.4-.2Z" />
                                                     </svg>
+
+                                                    
 
                                                     <p>{repo.name}</p>
                                                 </div>
@@ -557,8 +586,11 @@ export default function UserUnfo() {
                                                         </div>
                                                     </div>
                                                     <div className="singleRepoThirdRowRight">
-                                                        {/* <p>{repo?.createdAt}</p> */}
+                                                        <p>{repo?.createdAt}</p>
                                                     </div>
+                                                </div>
+                                                <div className="singleRepoDownloadButton">
+                                                    <img src="/icons8-download-64.png" alt="" />
                                                 </div>
                                             </div>
                                         </Link>
@@ -583,16 +615,16 @@ export default function UserUnfo() {
                             <section className="graphsContainer">
                                 <div className="graphContainerRow_1">
                                     <div className="ContributionGraphContainer">
-                                        <iframe src={`https://github-readme-activity-graph.vercel.app/graph?username=${userData?.userName}&theme=github-compact&area_color=185329&bg_color=4b4b4b&color=ffffff&hide_title=true&hide_border=true `} frameborder="0"></iframe>
+                                        <iframe src={`https://github-readme-activity-graph.vercel.app/graph?username=${userData?.userName}&theme=github-compact&area_color=185329&bg_color=4b4b4b&color=ffffff&hide_title=true&hide_border=true `} frameBorder="0"></iframe>
                                     </div>
                                     <div className="ContributionStatsContainer">
-                                        <iframe src={`https://github-readme-stats.vercel.app/api/top-langs/?username=${userData?.userName}&layout=donut&theme=dark&bg_color=4b4b4b&hide_border=true`} frameborder="0"></iframe>
+                                        <iframe src={`https://github-readme-stats.vercel.app/api/top-langs/?username=${userData?.userName}&layout=donut&theme=dark&bg_color=4b4b4b&hide_border=true`} frameBorder="0"></iframe>
                                     </div>
                                 </div>
                                 <div className="graphContainerRow_2">
 
                                     <div className="ContributionStatsContainer">
-                                        <iframe src={`https://github-readme-stats.vercel.app/api?username=${userData?.userName}&show_icons=true&theme=dark&bg_color=4b4b4b&hide_border=true&hide_title=true&,prs_merged,prs_merged_percentage`} frameborder="0"></iframe>
+                                        <iframe src={`https://github-readme-stats.vercel.app/api?username=${userData?.userName}&show_icons=true&theme=dark&bg_color=4b4b4b&hide_border=true&hide_title=true&,prs_merged,prs_merged_percentage`} frameBorder="0"></iframe>
                                     </div>
                                     {/* <div className="Contribution3dGraphContainer">
                                         <iframe src={`https://ssr-contributions-svg.vercel.app/_/${userData?.userName}?chart=3dbar&gap=0.6&scale=3&gradient=true&flatten=0&animation=fall&animation_delay=0.01&weeks=30&theme=green&dark=true`} frameborder="0"></iframe>
