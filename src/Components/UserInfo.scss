@@ -65,7 +65,7 @@
   justify-content: center;
 }
 .imageWrapper {
-  z-index: 2;
+  // z-index: 2;
   box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px,
     rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
   border-radius: 50%;
@@ -84,7 +84,7 @@
 }
 .userProfileBioContainer {
   position: relative;
-  z-index: 2;
+  z-index: 0;
   .userNameContainer {
     // padding: 10px 0px;
     margin: 10px 0px;
@@ -194,14 +194,18 @@
   // border: 1px solid rgb(0, 255, 132);
 
   .repoContainer {
+    max-height: 320px;
+    position: relative;
     // border: 1px solid pink;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
+    // border: 1px solid red;
+    overflow: hidden;
 
     .singleRepo {
       text-decoration: none;
       cursor: pointer;
-      z-index: 2;
+
       display: flex;
       flex-direction: column;
       justify-content: space-between;
@@ -309,10 +313,89 @@
         }
       }
     }
+    .viewMoreBtn {
+      z-index: 6;
+      position: absolute;
+      bottom: -0px;
+      left: 0px;
+      background: linear-gradient(
+        to bottom,
+        rgba(75, 75, 75, 0.5),
+        /* top fully transparent */ rgba(75, 75, 75, 0.9),
+        /* mid fade */ rgba(75, 75, 75, 1) /* bottom full opacity */
+      );
+      // border: 1px solid white;
+      height: 63px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      span {
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        // border: 1px solid black;
+        background-color: #3b3b3b;
+        padding: 4px 20px;
+        border-radius: 50px;
+        transition-duration: 0.4s;
+        &:hover {
+          background-color: var(--primary-color);
+        }
+        img {
+          height: 14px;
+          width: 14px;
+        }
+        p {
+          color: white;
+          // &:hover {
+          //   text-decoration: underline;
+          //   color: var(--primary-color);
+          // }
+        }
+      }
+    }
   }
 
   .graphsContainer {
-    border: 1px solid red;
+    .graphContainerRow_1 {
+      display: flex;
+
+      .ContributionGraphContainer {
+        width: 560px;
+        iframe {
+          width: 100%;
+          height: 200px;
+        }
+      }
+      .ContributionStatsContainer {
+        width: 373px;
+        iframe {
+
+          width: 100%;
+          height: 200px;
+        }
+      }
+    }
+    .graphContainerRow_2 {
+      display: flex;
+      .Contribution3dGraphContainer {
+        iframe {
+          width: 100%;
+          height: 200px;
+        }
+      }
+      .ContributionStatsContainer {
+        width: 427px;
+        height: 150px;
+        iframe {
+          // background-color: red;
+          width: 100%;
+          height: 150px;
+        }
+      }
+    }
   }
 }
 
