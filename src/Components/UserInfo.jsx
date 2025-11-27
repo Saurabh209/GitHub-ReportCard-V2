@@ -6,18 +6,57 @@ import ShinyText from '../../ReactBitsComponents/ShinyText'
 import SpotlightCard from '../../ReactBitsComponents/SpotlightCard/SpotlightCard'
 import ScrambledText from '../../ReactBitsComponents/ScrambledText/ScrambledText'
 import { Link } from 'react-router-dom'
+import Groq from "groq-sdk";
+import DecryptedText from '../../ReactBitsComponents/DecryptedText/DecryptedText'
+
 export default function UserUnfo() {
+    const client = new Groq({ apiKey: import.meta.env.VITE_API_KEY, dangerouslyAllowBrowser: true });
 
     const [userData, setUserData] = useState({})
     const [repoData, setRepoData] = useState({})
+    const [generatedUserBio, setGeneratedUserBio] = useState("")
     const [loading, setLoading] = useState(true)
     const [userName, setUserName] = useState("Saurabh209")
+
+
     const HandleUserFind = async () => {
         try {
             const [userInfo, repoInfo] = await Promise.all([
                 axios.get(`https://api.github.com/users/${userName}`),
                 axios.get(`https://api.github.com/users/${userName}/repos?per_page=9&sort=updated`),
             ]);
+            // console.log("data: ", userInfo.data)
+            // console.log("repoData", repoInfo.data)
+            let optimizedUserData = {
+                company: userInfo.data.company,
+                location: userInfo.data.location,
+                username: userInfo.data.login,
+                fullName: userInfo.data.name,
+            }
+            let optimizedRepoData = repoInfo.data.map(repo => ({
+                repoName: repo.name,
+                language: repo.language,
+                repoDescription: repo.description,
+
+            }))
+
+            if (!userInfo.data.bio) {
+                let generatedBio = "";
+
+                const res = await client.chat.completions.create({
+                    model: "llama-3.1-8b-instant",
+                    messages: [
+                        {
+                            role: "user",
+                            content: `Generate a short bio for a GitHub user, 
+                            this bio should be around 25-30 words not less and more, and give exact the bio no other 
+                            stuff, and make it like a third person described the user. User info: ${JSON.stringify(optimizedUserData)}  Repo info: ${optimizedRepoData}`
+                        }
+                    ],
+                });
+                generatedBio = (res.choices[0].message.content)
+                setGeneratedUserBio(generatedBio)
+            }
 
             const formattedDate = formatDate(userInfo.data.created_at)
             const filteredUser = {
@@ -36,7 +75,6 @@ export default function UserUnfo() {
                 twitter: userInfo.data.twitter_username,
                 url: userInfo.data.html_url
             };
-
             // repo array → map into clean list
             const filteredRepos = repoInfo.data.map(repo => ({
                 name: repo.name,
@@ -48,11 +86,17 @@ export default function UserUnfo() {
                 createdAt: repo.created_at,
                 size: repo.size
             }));
-
             setUserData(filteredUser);
             setRepoData(filteredRepos);
             setUserName("")
             setLoading(false);
+            // console.log("testingBio: ", filteredRepos.bio)
+
+
+
+
+
+
         } catch (err) {
             console.error("GitHub API failed:", err);
             setLoading(false);
@@ -67,6 +111,10 @@ export default function UserUnfo() {
             day: '2-digit'
         });
     };
+
+
+    // const client = new Groq({ apiKey: import.meta.env.API_KEY });
+
 
     const languageColors = {
         "JavaScript": "#f1e05a",
@@ -91,8 +139,23 @@ export default function UserUnfo() {
     };
     const defaultColor = "#9e9e9e";
 
+    // format number to representation state i.e. 1k , 12k
+    function formatNumber(num) {
+        if (num >= 1_000_000_000) {
+            return (num / 1_000_000_000).toFixed(1).replace(/\.0$/, "") + "B";
+        }
+        if (num >= 1_000_000) {
+            return (num / 1_000_000).toFixed(1).replace(/\.0$/, "") + "M";
+        }
+        if (num >= 1_000) {
+            return (num / 1_000).toFixed(1).replace(/\.0$/, "") + "K";
+        }
+        return num.toString();
+    }
 
-    console.log(repoData)
+
+
+
     return (
         <main className='userInfoMainContainer'>
 
@@ -207,7 +270,8 @@ export default function UserUnfo() {
                                                     <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
                                                     <circle cx="9" cy="7" r="4" />
                                                 </svg>
-                                                <p>{`Followers: ${userData.followers}`}</p>
+                                                {/* <p>{`Followers: ${userData.followers}`}</p> */}
+                                                <p>{`Followers: ${formatNumber(userData.followers)}`}</p>
                                             </div>
 
                                             {/* following */}
@@ -258,17 +322,28 @@ export default function UserUnfo() {
                                         </div>
                                     </div>
 
-                                    <div className='bioContainer'>
-                                        {/* <span>Bio: </span> {`${userData.bio}`} */}
 
-                                        <ShinyText
-                                            text={userData.bio}
-                                            disabled={false}
-                                            speed={3}
-                                            className='custom-class'
-                                        />
-
-                                    </div>
+                                    {/* <span>Bio: </span> {`${userData.bio}`} */}
+                                    {userData?.bio ?
+                                        <div className='bioContainer'>
+                                            <ShinyText
+                                                text={userData.bio}
+                                                disabled={false}
+                                                speed={3}
+                                                className='custom-class'
+                                            />
+                                        </div>
+                                        :
+                                        <div className='bioContainer  AI-generated-bio-container'>
+                                            {/* <p> {generatedUserBio}</p> */}
+                                            <ShinyText
+                                                text={generatedUserBio}
+                                                disabled={false}
+                                                speed={3}
+                                                className='custom-class'
+                                            />
+                                        </div>
+                                    }
                                     <div className='userLinksContainer'>
 
                                         {userData.company &&
@@ -427,8 +502,8 @@ export default function UserUnfo() {
                                                     <div className='singleRepoFirstRow'>
                                                         <svg
                                                             aria-hidden="true"
-                                                            height="18"
-                                                            width="18"
+                                                            height="12"
+                                                            width="12"
                                                             viewBox="0 0 16 16"
                                                             className="octicon octicon-repo mr-1"
                                                             fill="currentColor"
@@ -475,7 +550,7 @@ export default function UserUnfo() {
                                                                     <path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z" />
                                                                 </svg>
 
-                                                                <p>{repo?.stars}</p>
+                                                                <p>{formatNumber(repo?.stars)}</p>
                                                             </div >
                                                             <div className='singleRepoThirdRowForks'>
                                                                 <svg
@@ -498,7 +573,7 @@ export default function UserUnfo() {
                                                                     <path d="M12 12v3" />
                                                                 </svg>
 
-                                                                <p>{repo?.forks}</p>
+                                                                <p>{formatNumber(repo?.forks)}</p>
                                                             </div>
                                                         </div>
                                                         <div className='singleRepoThirdRowRight'>
