@@ -2,14 +2,15 @@ import { useState } from 'react'
 import './App.css'
 
 import UserInfo from './Components/UserInfo'
+// import DownloadUserUnfo from './Components/DownloadUserInfo'
 
 function App() {
 
 
   return (
-    <>
-    <UserInfo/>
-    </>
+    <div className='MainuserDataContainer'>
+      <UserInfo />
+    </div>
   )
 }
 

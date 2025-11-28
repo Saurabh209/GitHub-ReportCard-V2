@@ -24,5 +24,10 @@ a {
 
 #root {
   background-color: #2a2a2a;
-  height: 110vh;
+  /* height: 110vh; */
+}
+
+.MainuserDataContainer{
+  position: relative;
+  overflow: hidden;
 }

@@ -132,6 +132,7 @@
 
     box-shadow: 0px -16px 24px 0px rgba(255, 255, 255, 0.25) inset !important;
     animation: gradientFloat 8s ease infinite;
+
     p {
       color: white;
       font-size: 16px;
@@ -235,6 +236,7 @@
     position: relative;
     // border: 1px solid pink;
     display: grid;
+    border-radius: 10px;
     grid-template-columns: repeat(3, 1fr);
     // border: 1px solid red;
     overflow: hidden;
@@ -275,7 +277,7 @@
 
         .singleRepoFirstRow {
           P {
-            color: var(--primary-color);
+            // color: var(--primary-color);
           }
         }
       }
@@ -399,6 +401,425 @@
         align-items: center;
         gap: 4px;
         // border: 1px solid black;
+        background-color: rgb(97, 97, 97);
+        padding: 4px 20px;
+        border-radius: 50px;
+        transition-duration: 0.4s;
+        &:hover {
+          background-color: var(--primary-color);
+        }
+        img {
+          height: 14px;
+          width: 14px;
+        }
+        p {
+          color: white;
+          // &:hover {
+          //   text-decoration: underline;
+          //   color: var(--primary-color);
+          // }
+        }
+      }
+    }
+  }
+
+  .graphsContainer {
+    .graphContainerRow_1 {
+      display: flex;
+      .ContributionGraphContainer {
+        width: 620px;
+        iframe {
+          // background-color: red;
+          width: 100%;
+          height: 220px;
+        }
+      }
+      .ContributionStatsContainer {
+        width: 373px;
+        iframe {
+          width: 100%;
+          height: 200px;
+        }
+      }
+    }
+    .graphContainerRow_2 {
+      display: flex;
+      .Contribution3dGraphContainer {
+        iframe {
+          width: 100%;
+          height: 200px;
+        }
+      }
+      .ContributionStatsContainer {
+        width: 430px;
+        height: 160px;
+        iframe {
+          // background-color: red;
+          width: 100%;
+          height: 160px;
+        }
+      }
+    }
+  }
+}
+
+@keyframes gradientFloat {
+  0%,
+  100% {
+    background-position: 50% 0%;
+  }
+  50% {
+    background-position: 50% 100%;
+  }
+}
+
+.cloneContainer {
+  // position: absolute;
+  // top: 0px;
+  // z-index: -99;
+  width: 1500px !important;
+  // height: 926px !important;
+}
+.cloneUserInfoMainContainer {
+  background-color: rgba(0, 0, 0, 0);
+  // background-color: rgb(106, 106, 106);
+}
+.cloneLogoContainer {
+  // border: 1px solid black;
+  display: flex;
+  gap: 10px;
+}
+
+.cloneUserInfoCard {
+  display: grid;
+  grid-template-columns: 2fr 5fr;
+  background-color: var(--default-bg);
+  // border: 1px solid white;
+  /* height: 100%; */
+  margin: 10px 15px;
+  padding: 10px;
+  border-radius: 10px;
+  // box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px,
+  //   rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+}
+.CloneUserPersonalInfoContainer {
+  // border: 1px solid rgb(255, 0, 0);
+}
+
+.cloneUserProfileLogoContainer {
+  display: flex;
+  justify-content: center;
+}
+.cloneImageWrapper {
+  // z-index: 2;{userData.publicRepos-9}
+  box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px,
+    rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+  border-radius: 50%;
+  background-color: white;
+  height: 250px;
+  width: 250px;
+  overflow: hidden;
+  transition-duration: 0.4s;
+  &:hover {
+    transform: scale(1.02);
+  }
+  img {
+    height: 100%;
+    width: 100%;
+  }
+}
+.cloneUserProfileBioContainer {
+  cursor: default;
+  position: relative;
+  z-index: 0;
+  .userNameContainer {
+    // padding: 10px 0px;
+    margin: 10px 0px;
+    .userName {
+      margin: 10px 10px;
+      border-radius: 8px;
+      background-color: rgb(97, 97, 97);
+      padding: 5px 10px;
+      transition-duration: 0.4s;
+
+      h2 {
+        text-align: center;
+        font-size: 28px;
+        transition-duration: 0.4s;
+      }
+      p {
+        text-align: center;
+        transition-duration: 0.4s;
+      }
+    }
+    .followersFollowing {
+      // border: 1px solid white;
+      // padding: 10px 0px;
+      margin: 0px 5px;
+      display: flex;
+
+      div {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        margin: 0px 5px;
+        // border: 1px solid black;
+        padding: 10px 10px;
+        border-radius: 8px;
+        border: 1px solid rgb(97, 97, 97);
+        background-color: rgb(97, 97, 97);
+        &:hover {
+          svg {
+            transform: scale(var(--svg-scale));
+          }
+        }
+        svg {
+          color: var(--svg-color);
+          transition-duration: 0.4s;
+        }
+        p {
+          color: white;
+          font-size: 12px;
+        }
+      }
+      div:nth-child(1) {
+        transition-duration: 0.4s;
+      }
+    }
+  }
+  .bioContainer {
+    margin: 10px 10px;
+    border-radius: 8px;
+    background-color: rgb(97, 97, 97);
+    padding: 10px 10px;
+    p {
+    }
+  }
+  .AI-generated-bio-container {
+    position: relative;
+    transition-duration: 0.4s;
+    background-image: radial-gradient(
+        at 88% 40%,
+        hsla(240, 15%, 9%, 1) 0px,
+        transparent 85%
+      ),
+      radial-gradient(at 49% 30%, hsla(240, 15%, 9%, 1) 0px, transparent 85%),
+      radial-gradient(at 14% 26%, hsla(240, 15%, 9%, 1) 0px, transparent 85%),
+      radial-gradient(at 0% 64%, hsla(263, 93%, 56%, 1) 0px, transparent 85%),
+      radial-gradient(at 41% 94%, hsla(284, 100%, 84%, 1) 0px, transparent 85%),
+      radial-gradient(at 100% 99%, hsla(306, 100%, 57%, 1) 0px, transparent 85%);
+
+    box-shadow: 0px -16px 24px 0px rgba(255, 255, 255, 0.25) inset !important;
+    animation: gradientFloat 8s ease infinite;
+
+    p {
+      color: white;
+      font-size: 16px;
+      font-weight: 300;
+      line-height: 24px;
+    }
+    .AI-generated-Text {
+      position: absolute;
+      bottom: -5px;
+      right: 10px;
+      p {
+        color: black;
+        font-weight: 600px;
+        font-size: 10px;
+      }
+    }
+  }
+  .userLinksContainer {
+    margin: 10px 10px;
+    border-radius: 8px;
+    background-color: rgb(97, 97, 97);
+    padding: 5px 5px;
+    // border: 1px solid black;
+    padding: 10px 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    div {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      // margin: 5px 0px;
+      svg {
+        color: var(--svg-color);
+      }
+    }
+  }
+}
+
+.cloneUserStatsInfoContainer {
+  // border: 1px solid rgb(0, 255, 132);
+
+  .repoContainer {
+    // max-height: 320px;
+    position: relative;
+    // border: 1px solid pink;
+    border-radius: 12px;
+    overflow: hidden;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    // border: 1px solid red;
+    overflow: hidden;
+
+    .singleRepo {
+      position: relative;
+      text-decoration: none;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-width: 250px;
+      gap: 8px;
+      margin: 1px;
+      overflow: hidden;
+      background-color: rgb(97, 97, 97);
+      padding: 10px 10px;
+      transition-duration: 0.4s;
+
+      // &:hover {
+      //   border-radius: 4px;
+      //   transform: translateY(-4px);
+      //   background-color: rgb(68, 68, 68);
+      //   box-shadow: rgba(0, 0, 17, 0.4) 4px 4px 3px,
+      //     rgba(0, 0, 0, 0.3) 10px 11px 28px -7px,
+      //     rgba(0, 0, 0, 0.2) -2px -3px 2px inset;
+      //   .singleRepoFirstRow {
+      //     P {
+      //       color: var(--primary-color);
+      //     }
+      //   }
+      // }
+      &:hover {
+        background-color: rgb(68, 68, 68);
+        .singleRepoDownloadButton {
+          top: -38px;
+        }
+
+        .singleRepoFirstRow {
+          P {
+            // color: var(--primary-color);
+          }
+        }
+      }
+
+      .singleRepoFirstRow {
+        cursor: pointer;
+        // outline: 1px solid rgb(61, 196, 38);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        svg {
+          color: var(--primary-color);
+        }
+        p {
+          display: -webkit-box;
+          -webkit-line-clamp: 1;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+          transition-duration: 0.4s;
+          font-size: 14px;
+          color: rgb(255, 255, 255);
+        }
+      }
+      .singleRepoSecondRow {
+        // outline: 1px solid red;
+        p {
+          color: rgb(187, 187, 187);
+          display: -webkit-box;
+          -webkit-line-clamp: 1;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+          font-size: 12px;
+        }
+      }
+      .singleRepoThirdRow {
+        display: flex;
+        justify-content: space-between;
+        // outline: 1px solid blue;
+        .singleRepoThirdRowLeft {
+          display: flex;
+          gap: 10px;
+          .singleRepoThirdRowLng {
+            display: flex;
+            align-items: center;
+            p {
+              color: rgb(195, 195, 195);
+              font-size: 12px;
+            }
+          }
+          .singleRepoThirdRowStars {
+            display: flex;
+            align-items: center;
+            gap: 2px;
+            svg {
+              color: var(--svg-color3);
+            }
+            p {
+              color: rgb(195, 195, 195);
+              font-size: 12px;
+            }
+          }
+          .singleRepoThirdRowForks {
+            display: flex;
+            align-items: center;
+            gap: 2px;
+            svg {
+              color: var(--svg-color3);
+            }
+
+            p {
+              color: rgb(195, 195, 195);
+              font-size: 12px;
+            }
+          }
+        }
+        .singleRepoThirdRowRight {
+          display: flex;
+          p {
+            color: rgb(195, 195, 195);
+            font-size: 12px;
+          }
+        }
+      }
+      .singleRepoDownloadButton {
+        position: absolute;
+        top: -55px;
+        right: 0px;
+        transition-duration: 0.4s;
+        background-color: var(--primary-color);
+        padding: 5px 15px 20px 15px;
+        &:hover {
+          top: 0px;
+          padding: 4px 15px 4px 15px;
+        }
+        img {
+          height: 24px;
+          width: 24px;
+        }
+      }
+    }
+    .viewMoreBtn {
+      z-index: 6;
+      position: absolute;
+      bottom: -0px;
+      left: 0px;
+
+      // border: 1px solid white;
+      height: 63px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      span {
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        // border: 1px solid black;
         background-color: #3b3b3b;
         padding: 4px 20px;
         border-radius: 50px;
@@ -461,149 +882,6 @@
   }
 }
 
-@keyframes gradientShift {
-  0% {
-    background-position: 0% 50%;
-    background-size: 200% 200%;
-  }
-  50% {
-    background-position: 100% 50%;
-    background-size: 150% 150%;
-  }
-  100% {
-    background-position: 0% 50%;
-    background-size: 200% 200%;
-  }
-}
-@keyframes gradientRotate {
-  0% {
-    background-position: 0% 0%;
-  }
-  25% {
-    background-position: 100% 0%;
-  }
-  50% {
-    background-position: 100% 100%;
-  }
-  75% {
-    background-position: 0% 100%;
-  }
-  100% {
-    background-position: 0% 0%;
-  }
-}
-
-@keyframes gradientPulse {
-  0%,
-  100% {
-    background-size: 100% 100%;
-    opacity: 1;
-  }
-  50% {
-    background-size: 120% 120%;
-    opacity: 0.9;
-  }
-}
-
-@keyframes gradientWave {
-  0% {
-    background-position: 0% 50%;
-  }
-  100% {
-    background-position: 200% 50%;
-  }
-}
-
-@keyframes gradientZoom {
-  0%,
-  100% {
-    background-size: 150% 150%;
-  }
-  50% {
-    background-size: 250% 250%;
-  }
-}
-
-@keyframes gradientSpin {
-  0% {
-    filter: hue-rotate(0deg);
-  }
-  100% {
-    filter: hue-rotate(360deg);
-  }
-}
-
-@keyframes gradientSlide {
-  0% {
-    background-position: -200% 0%;
-  }
-  100% {
-    background-position: 200% 0%;
-  }
-}
-
-@keyframes gradientBreathe {
-  0%,
-  100% {
-    background-size: 180% 180%;
-    background-position: 50% 50%;
-  }
-  50% {
-    background-size: 220% 220%;
-    background-position: 30% 30%;
-  }
-}
-
-@keyframes gradientFloat {
-  0%,
-  100% {
-    background-position: 50% 0%;
-  }
-  50% {
-    background-position: 50% 100%;
-  }
-}
-
-@keyframes gradientMorph {
-  0%,
-  100% {
-    background-position: 0% 0%;
-    background-size: 200% 200%;
-  }
-  33% {
-    background-position: 100% 100%;
-    background-size: 150% 150%;
-  }
-  66% {
-    background-position: 50% 50%;
-    background-size: 250% 250%;
-  }
-}
-
-@keyframes gradientRipple {
-  0% {
-    background-position: 50% 50%;
-    background-size: 100% 100%;
-  }
-  50% {
-    background-position: 50% 50%;
-    background-size: 200% 200%;
-  }
-  100% {
-    background-position: 50% 50%;
-    background-size: 100% 100%;
-  }
-}
-
-@keyframes gradientDiagonal {
-  0% {
-    background-position: 0% 0%;
-  }
-  100% {
-    background-position: 100% 100%;
-  }
-}
-
 @media (max-width: 1330px) {
   .userInfoCard {
     grid-template-columns: 1fr;
@@ -614,219 +892,49 @@
 }
 @media (max-width: 1050px) {
   .userStatsInfoContainer {
-    // border: 1px solid rgb(0, 255, 132);
-
     .repoContainer {
-      max-height: 320px;
-      position: relative;
-      // border: 1px solid pink;
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      // border: 1px solid red;
-      overflow: hidden;
-
       .singleRepo {
-        position: relative;
-        text-decoration: none;
-        cursor: pointer;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        min-width: 250px;
-        gap: 8px;
-        margin: 1px;
-        overflow: hidden;
-        background-color: rgb(97, 97, 97);
-        padding: 10px 10px;
-        transition-duration: 0.4s;
-        &:hover {
-          background-color: rgb(68, 68, 68);
-          .singleRepoDownloadButton {
-            top: -38px;
-          }
-
-          .singleRepoFirstRow {
-            P {
-              color: var(--primary-color);
-            }
-          }
-        }
-
         .singleRepoFirstRow {
-          cursor: pointer;
-          // outline: 1px solid rgb(61, 196, 38);
-          display: flex;
-          align-items: center;
-          gap: 8px;
-          svg {
-            color: var(--primary-color);
-          }
-          p {
-            display: -webkit-box;
-            -webkit-line-clamp: 1;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-            transition-duration: 0.4s;
-            font-size: 14px;
-            color: rgb(255, 255, 255);
-          }
         }
         .singleRepoSecondRow {
-          // outline: 1px solid red;
-          p {
-            color: rgb(187, 187, 187);
-            display: -webkit-box;
-            -webkit-line-clamp: 1;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-            font-size: 12px;
-          }
         }
         .singleRepoThirdRow {
-          display: flex;
-          justify-content: space-between;
-          // outline: 1px solid blue;
           .singleRepoThirdRowLeft {
-            display: flex;
-            gap: 10px;
             .singleRepoThirdRowLng {
-              display: flex;
-              align-items: center;
-              p {
-                color: rgb(195, 195, 195);
-                font-size: 12px;
-              }
             }
             .singleRepoThirdRowStars {
-              display: flex;
-              align-items: center;
-              gap: 2px;
-              svg {
-                color: var(--svg-color3);
-              }
-              p {
-                color: rgb(195, 195, 195);
-                font-size: 12px;
-              }
             }
             .singleRepoThirdRowForks {
-              display: flex;
-              align-items: center;
-              gap: 2px;
-              svg {
-                color: var(--svg-color3);
-              }
-
-              p {
-                color: rgb(195, 195, 195);
-                font-size: 12px;
-              }
             }
           }
           .singleRepoThirdRowRight {
-            display: flex;
-            p {
-              color: rgb(195, 195, 195);
-              font-size: 12px;
-            }
           }
         }
         .singleRepoDownloadButton {
-          position: absolute;
-          top: -55px;
-          right: 0px;
-          transition-duration: 0.4s;
-          background-color: var(--primary-color);
-          padding: 5px 15px 20px 15px;
-          &:hover {
-            top: 0px;
-            padding: 4px 15px 4px 15px;
-          }
-          img {
-            height: 24px;
-            width: 24px;
-          }
-        }
-      }
-      .viewMoreBtn {
-        z-index: 6;
-        position: absolute;
-        bottom: -0px;
-        left: 0px;
-        background: linear-gradient(
-          to bottom,
-          rgba(75, 75, 75, 0.5),
-          /* top fully transparent */ rgba(75, 75, 75, 0.9),
-          /* mid fade */ rgba(75, 75, 75, 1) /* bottom full opacity */
-        );
-        // border: 1px solid white;
-        height: 63px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 100%;
-        span {
-          cursor: pointer;
-          display: flex;
-          align-items: center;
-          gap: 4px;
-          // border: 1px solid black;
-          background-color: #3b3b3b;
-          padding: 4px 20px;
-          border-radius: 50px;
-          transition-duration: 0.4s;
-          &:hover {
-            background-color: var(--primary-color);
-          }
-          img {
-            height: 14px;
-            width: 14px;
-          }
-          p {
-            color: white;
-            // &:hover {
-            //   text-decoration: underline;
-            //   color: var(--primary-color);
-            // }
-          }
         }
       }
     }
 
     .graphsContainer {
       .graphContainerRow_1 {
-        display: flex;
         .ContributionGraphContainer {
-          width: 620px;
           iframe {
-            // background-color: red;
-            width: 100%;
-            height: 220px;
           }
         }
         .ContributionStatsContainer {
-          width: 373px;
           iframe {
-            width: 100%;
-            height: 200px;
           }
         }
       }
       .graphContainerRow_2 {
-        display: flex;
         .Contribution3dGraphContainer {
           iframe {
-            width: 100%;
-            height: 200px;
           }
         }
         .ContributionStatsContainer {
-          width: 430px;
-          height: 160px;
           iframe {
-            // background-color: red;
-            width: 100%;
-            height: 160px;
           }
         }
       }
