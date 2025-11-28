@@ -1,11 +1,32 @@
 .userInfoMainContainer {
-  background-color: rgba(0, 0, 0, 0);
+  background-color: #2a2a2a;
+  padding-bottom: 20px;
   // background-color: rgb(106, 106, 106);
 }
 .LogoContainer {
   // border: 1px solid black;
   display: flex;
+  align-items: center;
   gap: 10px;
+  .downloadButtonContainer {
+    display: flex;
+    width: fit-content;
+    border-radius: 8px;
+    border: 2px solid #00ff88;
+    padding: 3px 5px;
+    transition-duration: 0.4s;
+    &:hover {
+      cursor: pointer;
+      // background-color: #00ff88;
+      padding: 3px 10px;
+      p {
+        color: #00ff88;
+      }
+    }
+    p {
+      font-size: 12px;
+    }
+  }
 }
 .userInput {
   margin-right: 10px;
@@ -43,6 +64,132 @@
 
 .userSubmitButton:hover {
   background-color: var(--primary-color);
+}
+
+.projectInfoCOntainer {
+  padding: 15px;
+  background-color: #2a2a2a;
+  display: grid;
+  grid-template-columns: 4fr 2fr;
+  gap: 4px;
+  // .aboutProject {
+  //   margin: 10px 10px;
+  //   border-radius: 8px;
+  //   // background-color: rgb(70, 70, 70);
+  //   background: linear-gradient(269deg, #454545 0%, #2a2a2a 100%);
+  //   padding: 10px 10px;
+  //   .aboutProjectHeadingContainer {
+  //     margin: 10px 10px;
+  //     border-radius: 8px;
+  //     // background-color: rgb(68, 68, 68);
+  //     padding: 10px 10px;
+  //     h2 {
+  //       font-size: 32px;
+  //       color: var(--primary-color);
+  //     }
+  //     p {
+  //       color: white;
+  //     }
+  //   }
+  //   .aboutProjectBioContainer {
+  //     margin: 10px 10px;
+  //     border-radius: 8px;
+  //      background-color: rgb(68, 68, 68);
+  //     padding: 10px 10px;
+  //     p {
+  //       color: white;
+  //     }
+  //   }
+  //   .aboutProjectFeatureContainer {
+  //     margin: 10px 10px;
+  //     border-radius: 8px;
+  //     background-color: rgb(68, 68, 68);
+  //     padding: 10px 10px;
+  //     p {
+  //     }
+  //   }
+  // }
+  .aboutProject {
+    border-radius: 12px;
+    background: linear-gradient(135deg, #1e1e1e 0%, #2b2b2b 100%);
+    padding: 18px 16px;
+    backdrop-filter: blur(6px);
+
+    .aboutProjectHeadingContainer {
+      margin-bottom: 18px;
+      padding: 12px 10px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+
+      h2 {
+        font-size: 34px;
+        color: var(--primary-color);
+        font-weight: 700;
+        letter-spacing: 1px;
+      }
+
+      p {
+        margin-top: 6px;
+        color: #d6d6d6;
+        font-size: 15px;
+      }
+    }
+
+    .aboutProjectBioContainer {
+      margin: 12px 0;
+      padding: 14px;
+      border-radius: 10px;
+      background: rgba(40, 40, 40, 0.9);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      line-height: 1.5;
+
+      p {
+        color: #e5e5e5;
+        font-size: 15px;
+      }
+    }
+
+    .aboutProjectFeatureContainer {
+      margin-top: 14px;
+      padding: 16px;
+      border-radius: 12px;
+      background: linear-gradient(331deg, #1e1e1e 0%, #2b2b2b 100%);
+      display: grid;
+      gap: 14px;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+
+      div {
+        background: linear-gradient(135deg, #3a3a3a, #2f2f2f);
+        padding: 14px;
+        border-radius: 10px;
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        transition: transform 0.3s ease, background 0.3s ease;
+        cursor: pointer;
+
+        &:hover {
+          transform: translateY(-4px);
+          background: linear-gradient(135deg, #4e4e4e, #323232);
+        }
+
+        h3 {
+          font-size: 18px;
+          font-weight: 600;
+          color: var(--primary-color);
+          margin-bottom: 6px;
+        }
+
+        p {
+          color: #cfcfcf;
+          font-size: 14px;
+        }
+      }
+    }
+  }
+
+  .aboutMe {
+    border-radius: 8px;
+    background: linear-gradient(237deg, #1e1e1e 0%, #2b2b2b 100%);
+    padding: 10px 10px;
+  }
 }
 
 .userInfoCard {
@@ -170,28 +317,6 @@
       }
     }
   }
-  .downloadButtonContainer {
-    display: flex;
-    gap: 5px;
-    margin: 10px 10px;
-    width: fit-content;
-    border-radius: 8px;
-    background-color: #313131;
-    padding: 10px 10px;
-    transition-duration: 0.4s;
-    &:hover {
-      cursor: pointer;
-      background-color: var(--primary-color);
-    }
-    p {
-      color: white;
-      font-weight: 300;
-    }
-    img {
-      height: 20px;
-      width: 20px;
-    }
-  }
 }
 
 .followersFollowing {
@@ -228,6 +353,7 @@
     transition-duration: 0.4s;
   }
 }
+
 .userStatsInfoContainer {
   // border: 1px solid rgb(0, 255, 132);
 
@@ -474,14 +600,15 @@
 }
 
 .cloneContainer {
-  // position: absolute;
-  // top: 0px;
-  // z-index: -99;
+  position: absolute;
+  top: 0px;
+  z-index: -99999;
   width: 1500px !important;
-  // height: 926px !important;
+
+  background-color: #2a2a2a;
 }
 .cloneUserInfoMainContainer {
-  background-color: rgba(0, 0, 0, 0);
+  // background-color: rgba(0, 0, 0, 0);
   // background-color: rgb(106, 106, 106);
 }
 .cloneLogoContainer {
