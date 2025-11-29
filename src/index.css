@@ -19,7 +19,8 @@ a {
   --svg-color2: #427cd6;
   --svg-color3: rgb(195, 195, 195);
   --text-primary-color: #141414;
-  --svg-scale: 1.16
+  --svg-scale: 1.16;
+  --dark-bg:#282828
 }
 
 #root {

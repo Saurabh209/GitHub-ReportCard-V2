@@ -5,10 +5,13 @@ import axios from "axios";
 import ShinyText from "../../ReactBitsComponents/ShinyText";
 import { Link } from "react-router-dom";
 import Groq from "groq-sdk";
+import FuzzyText from '../../ReactBitsComponents/FuzzyText/FuzzyText'
 
 
 // importing svg
 import ViewAllRepoLink from "../../public/icons8-external-link.svg";
+import ViewUserProfileLlink from "../../public/icons8-external-link-48.png"
+
 
 export default function UserUnfo() {
 
@@ -24,6 +27,7 @@ export default function UserUnfo() {
     const [generatedUserBio, setGeneratedUserBio] = useState("");
     const [loading, setLoading] = useState(true);
     const [userName, setUserName] = useState("Saurabh209");
+    const [status, setStatus] = useState(200)
 
 
     // function for downloading report card
@@ -87,7 +91,7 @@ export default function UserUnfo() {
                             role: "user",
                             content: `Write a 25-30 word third-person GitHub bio.
                              Only output the bio text, nothing else. User: 
-                             ${JSON.stringify(optimizedUserData)} Repos: ${optimizedRepoData}`,
+                             ${JSON.stringify(userInfo)} Repos: ${repoInfo}`,
                         },
                     ],
                 });
@@ -121,18 +125,28 @@ export default function UserUnfo() {
                 language: repo.language,
                 description: repo.description,
                 createdAt: repo.created_at,
+                updatedAt: repo.updated_at,
                 size: repo.size,
                 defaultBranchName: repo.default_branch
             }));
 
             setUserData(filteredUser);
             setRepoData(filteredRepos);
+            console.log("filtered repo: ", filteredRepos)
             setUserName("");
             setLoading(false);
+            setStatus(200)
             // console.log("testingBio: ", filteredRepos.bio)
         } catch (err) {
-            console.error("GitHub API failed:", err);
-            setLoading(false);
+            if (err.status === 404) {
+                console.log("user not found")
+                setLoading(true);
+                setStatus(404);
+            } else if (err.status = 403) {
+                console.log("rate limit excedded")
+                setStatus(403)
+            }
+
         }
     };
 
@@ -195,7 +209,39 @@ export default function UserUnfo() {
         return `Created ${years}y ${days}d ago`;
     }
 
+    function activeAgo(date) {
+        const created = new Date(date);
+        const now = new Date();
 
+        const diffMs = now - created;
+        const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+        const years = Math.floor(diffDays / 365);
+        const days = diffDays % 365;
+
+        // Status dot
+
+        // Return formatted result
+        if (years === 0 && days === 0) return ` Active today`;
+        if (years === 0) return `Last Activity ${days}d ago`;
+        return `Last Activity  ${years}y ${days}d ago`;
+    }
+
+    function activeAgoColor(date) {
+        const created = new Date(date);
+        const now = new Date();
+        const diffMs = now - created;
+        const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+        const years = Math.floor(diffDays / 365);
+        const days = diffDays % 365;
+
+        let color = "";
+
+        if (diffDays === 0) color = "#00ff88";
+        else if (diffDays <= 7) color = "#c6ff00";
+        else if (diffDays <= 30) color = "#ffaa00";
+        else color = "#ff4040";
+        return color
+    }
 
     return (
         <>
@@ -296,7 +342,7 @@ export default function UserUnfo() {
 
                 {loading ?
                     <div className="projectInfoCOntainer">
-                        <section class="aboutProject">
+                        <section className="aboutProject">
                             <div className="aboutProjectHeadingContainer">
                                 <h2>About GitHub Report Card V2</h2>
                                 <p>Track, Analyze & Showcase Your GitHub Journey in One Place</p>
@@ -344,7 +390,45 @@ export default function UserUnfo() {
                             </div>
 
                         </section>
-                        <section class="aboutMe">
+                        <section className="aboutMe">
+                            {status === 404 &&
+                                <div className="userNotFoundContainer">
+                                    <FuzzyText
+                                        baseIntensity={0.2}
+                                        hoverIntensity={0.2}
+                                        enableHover={true}
+                                    >
+                                        404
+                                    </FuzzyText>
+                                    <FuzzyText
+                                        baseIntensity={0.2}
+                                        hoverIntensity={0.2}
+                                        enableHover={true}
+                                        fontSize={40}
+                                    >
+                                        User not Found
+                                    </FuzzyText>
+                                </div>}
+
+                            {status === 403 &&
+                                <div className="userNotFoundContainer">
+                                    <FuzzyText
+                                        baseIntensity={0.2}
+                                        hoverIntensity={0.2}
+                                        enableHover={true}
+                                        fontSize={100}
+                                    >
+                                        403
+                                    </FuzzyText>
+                                    <FuzzyText
+                                        baseIntensity={0.2}
+                                        hoverIntensity={0.2}
+                                        enableHover={true}
+                                        fontSize={26}
+                                    >
+                                        Api Rate Limit Exceded
+                                    </FuzzyText>
+                                </div>}
 
                         </section>
 
@@ -357,15 +441,22 @@ export default function UserUnfo() {
                             {/* logoCOntainer */}
                             <section className="userProfileLogoContainer">
                                 <div className="imageWrapper">
-                                    <img src={userData.profileLogo} alt="" />
+                                    <img src={userData?.profileLogo} alt="" />
                                 </div>
                             </section>
 
                             <section className="userProfileBioContainer">
                                 <div className="userNameContainer">
                                     <div className="userName">
-                                        <h2 className="">{userData.fullName}</h2>
-                                        <p className="">{` @${userData.userName}`}</p>
+                                        <h2 className="">{`${userData?.fullName ? userData?.fullName : ""} `}<span style={{ color: `${activeAgoColor(repoData[0]?.updatedAt)}` }}> {activeAgo(repoData[0]?.updatedAt)}</span></h2>
+                                        <span>
+                                            <a href={userData?.url}>
+                                                <p className="">{` @${userData?.userName}`}</p>
+                                                <img src={ViewUserProfileLlink} alt="" />
+                                            </a>
+                                        </span>
+
+
                                     </div>
 
                                     <div className="followersFollowing">
@@ -468,8 +559,8 @@ export default function UserUnfo() {
                                         <div>
                                             <svg
                                                 xmlns="http://www.w3.org/2000/svg"
-                                                width="20"
-                                                height="20"
+                                                width="16"
+                                                height="16"
                                                 viewBox="0 0 24 24"
                                                 fill="none"
                                                 stroke="currentColor"
@@ -505,8 +596,8 @@ export default function UserUnfo() {
                                         <div>
                                             <svg
                                                 xmlns="http://www.w3.org/2000/svg"
-                                                width="20"
-                                                height="20"
+                                                width="16"
+                                                height="16"
                                                 viewBox="0 0 24 24"
                                                 fill="none"
                                                 stroke="currentColor"
@@ -532,8 +623,8 @@ export default function UserUnfo() {
                                         <div>
                                             <svg
                                                 xmlns="http://www.w3.org/2000/svg"
-                                                width="20"
-                                                height="20"
+                                                width="16"
+                                                height="16"
                                                 viewBox="0 0 24 24"
                                                 fill="none"
                                                 stroke="currentColor"
@@ -560,8 +651,8 @@ export default function UserUnfo() {
                                         <div>
                                             <svg
                                                 xmlns="http://www.w3.org/2000/svg"
-                                                width="20"
-                                                height="20"
+                                                width="16"
+                                                height="16"
                                                 viewBox="0 0 24 24"
                                                 fill="none"
                                                 stroke="currentColor"
@@ -717,16 +808,16 @@ export default function UserUnfo() {
                             <section className="graphsContainer">
                                 <div className="graphContainerRow_1">
                                     <div className="ContributionGraphContainer">
-                                        <iframe src={`https://github-readme-activity-graph.vercel.app/graph?username=${userData?.userName}&theme=github-compact&area_color=185329&bg_color=4b4b4b&color=ffffff&hide_title=true&hide_border=true `} frameBorder="0"></iframe>
+                                        <iframe src={`https://github-readme-activity-graph.vercel.app/graph?username=${userData?.userName}&theme=github-compact&area_color=185329&bg_color=282828&color=ffffff&hide_title=true&hide_border=true `} frameBorder="0"></iframe>
                                     </div>
                                     <div className="ContributionStatsContainer">
-                                        <iframe src={`https://github-readme-stats.vercel.app/api/top-langs/?username=${userData?.userName}&layout=donut&theme=dark&bg_color=4b4b4b&hide_border=true`} frameBorder="0"></iframe>
+                                        {/* <iframe src={`https://github-readme-stats.vercel.app/api/top-langs/?username=${userData?.userName}&layout=donut&theme=dark&bg_color=282828&color=ffffff00&hide_border=true`} frameBorder="0"></iframe> */}
                                     </div>
                                 </div>
                                 <div className="graphContainerRow_2">
 
                                     <div className="ContributionStatsContainer">
-                                        <iframe src={`https://github-readme-stats.vercel.app/api?username=${userData?.userName}&show_icons=true&theme=dark&bg_color=4b4b4b&hide_border=true&hide_title=true&,prs_merged,prs_merged_percentage`} frameBorder="0"></iframe>
+                                        {/* <iframe src={`https://github-readme-stats.vercel.app/api?username=${userData?.userName}&show_icons=true&theme=dark&bg_color=282828&hide_border=true&hide_title=true&,prs_merged,prs_merged_percentage`} frameBorder="0"></iframe> */}
                                     </div>
                                     {/* <div className="Contribution3dGraphContainer">
                                         <iframe src={`https://ssr-contributions-svg.vercel.app/_/${userData?.userName}?chart=3dbar&gap=0.6&scale=3&gradient=true&flatten=0&animation=fall&animation_delay=0.01&weeks=30&theme=green&dark=true`} frameborder="0"></iframe>
@@ -928,8 +1019,8 @@ export default function UserUnfo() {
                                             <div>
                                                 <svg
                                                     xmlns="http://www.w3.org/2000/svg"
-                                                    width="20"
-                                                    height="20"
+                                                    width="16"
+                                                    height="16"
                                                     viewBox="0 0 24 24"
                                                     fill="none"
                                                     stroke="currentColor"
@@ -965,8 +1056,8 @@ export default function UserUnfo() {
                                             <div>
                                                 <svg
                                                     xmlns="http://www.w3.org/2000/svg"
-                                                    width="20"
-                                                    height="20"
+                                                    width="16"
+                                                    height="16"
                                                     viewBox="0 0 24 24"
                                                     fill="none"
                                                     stroke="currentColor"
@@ -992,8 +1083,8 @@ export default function UserUnfo() {
                                             <div>
                                                 <svg
                                                     xmlns="http://www.w3.org/2000/svg"
-                                                    width="20"
-                                                    height="20"
+                                                    width="16"
+                                                    height="16"
                                                     viewBox="0 0 24 24"
                                                     fill="none"
                                                     stroke="currentColor"
@@ -1020,8 +1111,8 @@ export default function UserUnfo() {
                                             <div>
                                                 <svg
                                                     xmlns="http://www.w3.org/2000/svg"
-                                                    width="20"
-                                                    height="20"
+                                                    width="16"
+                                                    height="16"
                                                     viewBox="0 0 24 24"
                                                     fill="none"
                                                     stroke="currentColor"
@@ -1167,17 +1258,17 @@ export default function UserUnfo() {
                                 <section className="graphsContainer">
                                     <div className="graphContainerRow_1">
                                         <div className="ContributionGraphContainer">
-                                            <iframe src={`https://github-readme-activity-graph.vercel.app/graph?username=${userData?.userName}&theme=github-compact&area_color=185329&bg_color=4b4b4b&color=ffffff&hide_title=true&hide_border=true `} frameBorder="0"></iframe>
+                                            <iframe src={`https://github-readme-activity-graph.vercel.app/graph?username=${userData?.userName}&theme=github-compact&area_color=185329&bg_color=282828&color=ffffff&hide_title=true&hide_border=true `} frameBorder="0"></iframe>
                                         </div>
-                                        <div className="ContributionStatsContainer">
-                                            <iframe src={`https://github-readme-stats.vercel.app/api/top-langs/?username=${userData?.userName}&layout=donut&theme=dark&bg_color=4b4b4b&hide_border=true`} frameBorder="0"></iframe>
-                                        </div>
+                                        {/* <div className="ContributionStatsContainer">
+                                            <iframe src={`https://github-readme-stats.vercel.app/api/top-langs/?username=${userData?.userName}&layout=donut&theme=dark&bg_color=282828&hide_border=true`} frameBorder="0"></iframe>
+                                        </div> */}
                                     </div>
                                     <div className="graphContainerRow_2">
 
-                                        <div className="ContributionStatsContainer">
+                                        {/* <div className="ContributionStatsContainer">
                                             <iframe src={`https://github-readme-stats.vercel.app/api?username=${userData?.userName}&show_icons=true&theme=dark&bg_color=4b4b4b&hide_border=true&hide_title=true&,prs_merged,prs_merged_percentage`} frameBorder="0"></iframe>
-                                        </div>
+                                        </div> */}
                                         {/* <div className="Contribution3dGraphContainer">
                                         <iframe src={`https://ssr-contributions-svg.vercel.app/_/${userData?.userName}?chart=3dbar&gap=0.6&scale=3&gradient=true&flatten=0&animation=fall&animation_delay=0.01&weeks=30&theme=green&dark=true`} frameborder="0"></iframe>
                                     </div> */}
