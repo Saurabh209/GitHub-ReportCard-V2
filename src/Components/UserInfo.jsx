@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import * as htmlToImage from "html-to-image";
 import "./UserInfo.scss";
 import axios from "axios";
@@ -6,6 +6,7 @@ import ShinyText from "../../ReactBitsComponents/ShinyText";
 import { Link } from "react-router-dom";
 import Groq from "groq-sdk";
 import FuzzyText from '../../ReactBitsComponents/FuzzyText/FuzzyText'
+import RepoDownload from "./RepoDownload";
 
 
 // importing svg
@@ -26,7 +27,7 @@ export default function UserUnfo() {
     const [repoData, setRepoData] = useState({});
     const [generatedUserBio, setGeneratedUserBio] = useState("");
     const [loading, setLoading] = useState(true);
-    const [userName, setUserName] = useState("Saurabh209");
+    const [userName, setUserName] = useState("");
     const [status, setStatus] = useState(200)
 
 
@@ -91,7 +92,7 @@ export default function UserUnfo() {
                             role: "user",
                             content: `Write a 25-30 word third-person GitHub bio.
                              Only output the bio text, nothing else. User: 
-                             ${JSON.stringify(userInfo)} Repos: ${repoInfo}`,
+                             ${JSON.stringify(optimizedUserData)} Repos: ${optimizedRepoData}`,
                         },
                     ],
                 });
@@ -143,7 +144,7 @@ export default function UserUnfo() {
                 setLoading(true);
                 setStatus(404);
             } else if (err.status = 403) {
-                console.log("rate limit excedded")
+                console.log("rS", err)
                 setStatus(403)
             }
 
@@ -242,6 +243,19 @@ export default function UserUnfo() {
         else color = "#ff4040";
         return color
     }
+
+    useEffect(() => {
+        if (!userName) return;
+
+        const timer = setTimeout(() => {
+            console.log("Api Called")
+        }, 600);
+        return () => clearTimeout(timer)
+    }, [userName])
+
+
+
+    // console.log("userData: ", userData)
 
     return (
         <>
@@ -789,7 +803,7 @@ export default function UserUnfo() {
                                         </Link>
                                     );
                                 })}
-                                {userData.publicRepos > 9 && (
+                                {/* {userData.publicRepos > 9 && (
                                     <a
                                         href={`${userData.url}?tab=repositories`}
                                         target="_blank"
@@ -802,6 +816,18 @@ export default function UserUnfo() {
                                             </span>
                                         </div>
                                     </a>
+                                )} */}
+                                {userData.publicRepos > 9 && (
+                                    <Link
+                                        to={`/downloadRepo/${userData?.userName}`}
+                                    >
+                                        <div className="viewMoreBtn">
+                                            <span>
+                                                <p>View All</p>
+                                                <img src={ViewAllRepoLink} alt="" />
+                                            </span>
+                                        </div>
+                                    </Link>
                                 )}
                             </section>
 
@@ -1258,7 +1284,7 @@ export default function UserUnfo() {
                                 <section className="graphsContainer">
                                     <div className="graphContainerRow_1">
                                         <div className="ContributionGraphContainer">
-                                            <iframe src={`https://github-readme-activity-graph.vercel.app/graph?username=${userData?.userName}&theme=github-compact&area_color=185329&bg_color=282828&color=ffffff&hide_title=true&hide_border=true `} frameBorder="0"></iframe>
+                                            <img src={`https://github-readme-activity-graph.vercel.app/graph?username=${userData?.userName}&theme=github-compact&area_color=185329&bg_color=282828&color=ffffff&hide_title=true&hide_border=true `} frameBorder="0"></img>
                                         </div>
                                         {/* <div className="ContributionStatsContainer">
                                             <iframe src={`https://github-readme-stats.vercel.app/api/top-langs/?username=${userData?.userName}&layout=donut&theme=dark&bg_color=282828&hide_border=true`} frameBorder="0"></iframe>
