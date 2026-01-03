@@ -27,7 +27,7 @@ export default function UserUnfo() {
     const [repoData, setRepoData] = useState({});
     const [generatedUserBio, setGeneratedUserBio] = useState("");
     const [loading, setLoading] = useState(true);
-    const [userName, setUserName] = useState("");
+    const [userName, setUserName] = useState("Saurabh209");
     const [status, setStatus] = useState(200)
 
 
